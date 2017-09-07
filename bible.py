@@ -10,31 +10,32 @@ class chapter(verse):
     _numVerses=0
     
     def __init__(self):
-        verse.__init__(self)
+        self.verse=verse.__init__(self)
 class book(chapter):
-    
+    _oldTBooks=[]
+    _newTBooks=[]
+    books=[]
     _numChapters=0
     def __init__(self):
-        chapter.__init__(self)
+        self.chapter=chapter.__init__(self)
 
+    def load(self,bibleText,match):
+        startOfText=match.start()
+        text=bibleText[startOfText+len(match.group()):]
         
 class bible(book):
     _startText='Old Testament'
 
-
     books=[];
     
     def __init__(self):
-        book.__init__(self)
+        self.book=book.__init__(self)
 
     def load(self):
         f=open('KJV_txt_ForPythonBreakup.txt')
-        for line in f:
-            match=re.search(self._startText,line)
-            if(match):
-                print(line)
-                break
-        for i in range(10):
-            print(f.readline())
-        f.close()
-        
+        bibleText=f.read()
+        match=re.search(self._startText,bibleText)
+        if(match):
+            self.book.load(bibleText,match)
+        else:
+            return -1;
