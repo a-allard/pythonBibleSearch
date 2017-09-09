@@ -68,14 +68,78 @@ class Chapter:
 class book:
     
     def __init__(self):
-        _startOfBookKey='Page \d+ '
-        _oldTBooks=[]
-        _newTBooks=[]
-        books=None
+        self._startOfBookKey='Page \d+ '
+        self._oldTBooks=[]
+        self._newTBooks=[]
+        self.books=None
         self.book=[];
         self.lookUp={'gen':0,'genesis':0,
-                     '':1,'exodus':1,
-                     'lev':2,'leviticus':2}
+                     'ex':1,'exodus':1,
+                     'lev':2,'leviticus':2,
+                     'num':3,'numbers':3,
+                     'deut':4,'deuteronomy':4,
+                     'josh':5,'joshua':5,
+                     'judg':6,'judges':6,
+                     'ruth':7,
+                     '1 sam':8,'1 samuel':8,
+                     '2 sam':9,'2 samuel':9,
+                     '1 kings':10,
+                     '2 kings':11,
+                     '1 chr':12, '1 chronicles':12,
+                     '2 chr':13, '2 chronicles':13,
+                     'ezra':14,
+                     'neh':15,'nehemiah':15,
+                     'esth':16,'esther':16,
+                     'job':17,
+                     'ps':18,'psalms':18,
+                     'prov':19,'proverbs':19,
+                     'eccl':20,'ecclsiastes':20,
+                     'song':21,'song of solomon':21,
+                     'isa':22,'isaiah':22,
+                     'jer':23,'jeremiah':23,
+                     'lam':24,'lamantations':24,
+                     'ezek':25,'ezekial':25,
+                     'dan':26,'daniel':26,
+                     'hos':27,'hosea':27,
+                     'joel':28,
+                     'am':29,'amos':29,
+                     'ob':30,'obadiah':30,
+                     'jon':31,'jonah':31,
+                     'mic':32,'micah':32,
+                     'nah':33,'nahum':33,
+                     'hab':34,'habakkuk':35,
+                     'zeph':35,'zephaniah':35,
+                     'hag':36,'haggai':36,
+                     'zech':37,'zechariah':37,
+                     'mal':38,'malachi':38,
+                     'mt':39,'matthew':39,
+                     'mk':40,'mark':40,
+                     'lk':41,'luke':41,
+                     'jn':42,'john':42,
+                     'acts':43,'acts of the apostles':43,
+                     'rom':44,'romans':44,
+                     '1 cor':45,'1 corinthians':45,
+                     '2 cor':46,'2 corinthians':46,
+                     'gal':47,'galatians':47,
+                     'eph':48,'ephesians':48,
+                     'phil':49,'philippians':49,
+                     'col':50,'colossians':50,
+                     '1 thess':51,'1 thessalonians':51,
+                     '2 thess':52,'2 thessalonians':52,
+                     '1 tim':53,'1 timothy':53,
+                     '2 tim':54,'2 timothy':54,
+                     'titus':55,
+                     'philemon':56,
+                     'heb':57,'hebrews':57,
+                     'jas':58,'james':59,
+                     '1 pet':59,'1 peter':59,
+                     '2 pet':60,'2 peter':60,
+                     '1 jn':61,'1 john':61,
+                     '2 jn':62,'2 john':62,
+                     '3 jn':63,'3 john':63,
+                     'jude':64,
+                     'rev':65,'revelation':65,'revelations':65
+                     }
 
     def load(self,bibleText,match):
         startOfText=match.start()
@@ -138,7 +202,7 @@ class book:
 
 
         
-class bible(book):
+class bible:
     _startText='Old Testament'
 
     books=None;
