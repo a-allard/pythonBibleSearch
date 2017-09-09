@@ -212,7 +212,7 @@ class bible:
         #return self.bible
 
     def load(self):
-        f=open('KJV_txt_ForPythonBreakupNoHeader.txt')
+        f=open('KJV_txt_ForPythonBreakup.txt')
         bibleText=f.read()
         match=re.search(self._startText,bibleText)
         if(match):
