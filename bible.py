@@ -8,11 +8,11 @@ class verse:
     def __init__(self):
         pass
     def load(self,text):
-        #print(text)
+        print(text[0:100])
         text=text.replace('}','').split('{')
         for i in range(len(text)):
             self.verse.append(text[i])
-        #return self.verses
+        
     def __getitem__(self,key):
         return self.verse[key]
     def __setitem__(self,index,val):
@@ -49,17 +49,12 @@ class chapter:
             self.chapter.append(verse())
             #self.curChapter[i]=(i)
             self.chapter[i].load(bookText[startOfChapters[i]:startOfChapters[i+1]])
-            #print(bookText[startOfChapters[i]:startOfChapters[i+1]][0:10])
-        #if(i>0):
+            
       #  print(str(i+3)+'\t'+str(self.numChapters))
         self.chapter.append(verse())
-        #self.curChapter[i+1]=(i+1)
+
         self.chapter[i+1].load(bookText[startOfChapters[-1]:])
-##        else:
-##            self.chapter.append(verse())
-##            self.chapter[i].load(bookText[startOfChapters[-1]:])
-        #print(self.chapterText[0][0][0:50])
-        #return self.verse[0:]
+
     def __getitem__(self,index):
         return self.chapter[index]
     def __setitem__(self,index,val):
@@ -90,14 +85,14 @@ class book:
                 startOfBooks.append(match.start()+len(stringOfStart))
             else:
                 print(curBook)
-        #print((startOfBooks))
+        
         for i in range(len(startOfBooks)-1):
             self.book.append(chapter())
             self.book[i].load(text[startOfBooks[i]:startOfBooks[i+1]])
             #print(self.books[i])
         self.book.append(chapter())
         self.book[i+1].load(text[startOfBooks[-1]:])
-        #return self.book[0:]
+        
             
     
     def __getitem__(self,key):
@@ -144,7 +139,7 @@ class bible(book):
         bibleText=f.read()
         match=re.search(self._startText,bibleText)
         if(match):
-            #self.books=self.book.load(bibleText,match)
+            
             self.bible.load(bibleText,match)
         else:
             return -1;
