@@ -8,7 +8,6 @@ class Verse:
     def __init__(self):
         self.verse=[]
     def load(self,text):
-        #print(text[0:100])
         text=text.replace('}','').split('{')
         for i in range(len(text)):
             self.verse.append(text[i])
@@ -37,7 +36,6 @@ class Chapter:
         chapters=re.findall('\{\d+:\d+}',bookText)[-1]
         
         self.numChapters=int(re.search('{\d+',chapters).group()[1:])
-        #print(self.numChapters)
         for curChap in range(self.numChapters):
             stringOfStart='\{'+str(curChap+1)+self._startOfChapterKey
             
@@ -159,7 +157,6 @@ class book:
         for i in range(len(startOfBooks)-1):
             self.book.append(Chapter())
             self.book[i].load(text[startOfBooks[i]:startOfBooks[i+1]])
-            #print(self.books[i])
         self.book.append(Chapter())
         self.book[i+1].load(text[startOfBooks[-1]:])
         
@@ -209,7 +206,6 @@ class bible:
     
     def __init__(self):
         self.bible=book()
-        #return self.bible
 
     def load(self):
         f=open('KJV_txt_ForPythonBreakup.txt')
@@ -255,18 +251,14 @@ class bible:
                 verses2=verses
                 if(max(verses2)>len(self.bible.book[book].chapter[chapter].verse)):
                     for ver in verses2:
-                        #print(ver)
                         if(ver>len(self.bible.book[book].chapter[chapter].verse)-1):
                             verses2=verses2[0:verses2.index(ver)]
                             break
-                #return verses
-                #print(chapter)
                 for verse in verses2:
                     match=re.search(searchFor.lower(),self.bible.book[book].chapter[chapter].verse[verse].lower())
                     if(match):
                         matchList.append(match)
                         indexList.append((book,chapter,verse))
-                #print(verse)
                 
         return(matchList,indexList)
 
