@@ -219,7 +219,56 @@ class bible:
             
             self.bible.load(bibleText,match)
         else:
-            return -1;
+            return -1
+    def search(self,searchFor,books=None,chapters=None,verses=None):
+        if not (books==None):
+            if(isinstance(books,int)):
+                books=[books]
+            elif(isinstance(books[0],str)):
+                if(isinstance(books,list)):
+                    return
+        else:
+            books=list(range(66))
+        if not(chapters==None):
+            if(isinstance(chapters,int)):
+                chapters=[chapters]
+        else:
+            chapters=list(range(150))
+        if not(verses==None):
+            if(isinstance(verses,int)):
+                verses=[verses]
+        else:
+            verses=list(range(200))
+        matchList=[]
+        indexList=[]
+        books=sorted(books)
+        chapters=sorted(chapters)
+        verses=sorted(verses)
+        for book in books:
+            chapters2=chapters
+            if(max(chapters2)>len(self.bible.book[book].chapter)):
+                for chap in chapters2:
+                    if(chap>len(self.bible.book[book].chapter)-1):
+                        chapters2=chapters2[0:chapters2.index(chap)]
+                        break
+            for chapter in chapters2:
+                verses2=verses
+                if(max(verses2)>len(self.bible.book[book].chapter[chapter].verse)):
+                    for ver in verses2:
+                        #print(ver)
+                        if(ver>len(self.bible.book[book].chapter[chapter].verse)-1):
+                            verses2=verses2[0:verses2.index(ver)]
+                            break
+                #return verses
+                #print(chapter)
+                for verse in verses2:
+                    match=re.search(searchFor.lower(),self.bible.book[book].chapter[chapter].verse[verse].lower())
+                    if(match):
+                        matchList.append(match)
+                        indexList.append((book,chapter,verse))
+                #print(verse)
+                
+        return(matchList,indexList)
 
 
 
