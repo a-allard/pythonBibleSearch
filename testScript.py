@@ -1,10 +1,10 @@
 import os
 import sys
 import getpass
-import bible
+from bible import bible
 
 
 
-book=bible.bible()
-book.load()
+bible=bible()
+bible.load()
 
