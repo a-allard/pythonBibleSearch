@@ -8,3 +8,4 @@ from bible import bible
 bible=bible()
 bible.load()
 
+
