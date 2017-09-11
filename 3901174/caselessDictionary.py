@@ -17,7 +17,7 @@ pair as the key's value (values become dictionaries)."""
         return dict.__contains__(self, key.lower())
   
     def __getitem__(self, key):
-        return dict.__getitem__(self, key.lower())['val'] 
+        return dict.__getitem__(self, key.lower())
   
     def __setitem__(self, key, value):
         return dict.__setitem__(self, key.lower(), {'key': key, 'val': value})
@@ -40,19 +40,19 @@ pair as the key's value (values become dictionaries)."""
         return [(v['key'], v['val']) for v in dict.itervalues(self)]
     
     def keys(self):
-        return [v['key'] for v in dict.itervalues(self)]
+        return dict.keys(self)
     
     def values(self):
-        return [v['val'] for v in dict.itervalues(self)]
+        return dict.values(self)
     
     def __iter__(self):
-        for v in dict.itervalues(self):
+        for v in dict.values(self):
             yield v['key'], v['val']
         
-    def iterkeys(self):
-        for v in dict.itervalues(self):
-            yield v['key']
-        
-    def itervalues(self):
-        for v in dict.itervalues(self):
-            yield v['val']
+##    def keys(self):
+##        for v in dict.values(self):
+##            yield v['key']
+##        
+##    def values(self):
+##        for v in dict.values(self):
+##            yield v['val']
