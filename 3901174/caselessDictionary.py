@@ -1,4 +1,4 @@
-class CaselessDictionary(dict):
+class caselessDictionary(dict):
     """Dictionary that enables case insensitive searching while preserving case sensitivity 
 when keys are listed, ie, via keys() or items() methods. 
 
@@ -7,7 +7,7 @@ pair as the key's value (values become dictionaries)."""
 
     def __init__(self, initval={}):
         if isinstance(initval, dict):
-            for key, value in initval.iteritems():
+            for key, value in initval.__iter__():
                 self.__setitem__(key, value)
         elif isinstance(initval, list):
             for (key, value) in initval:
@@ -45,7 +45,7 @@ pair as the key's value (values become dictionaries)."""
     def values(self):
         return [v['val'] for v in dict.itervalues(self)]
     
-    def iteritems(self):
+    def __iter__(self):
         for v in dict.itervalues(self):
             yield v['key'], v['val']
         
