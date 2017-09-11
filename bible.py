@@ -2,6 +2,11 @@ import re
 import os
 import sys
 
+
+sys.path.insert(0,os.path.abspath(r"3901174"))
+
+import caselessDictionary
+
 class Verse:
     """A class to split each verse into.  Not sure if this is really needed."""
     
@@ -71,7 +76,8 @@ class book:
         self._newTBooks=[]
         self.books=None
         self.book=[];
-        self.lookUp={'gen':0,'genesis':0,
+        self.lookUp=caselessDictionary.caselessDictionary()
+        self.lookUp.update({'gen':0,'genesis':0,
                      'ex':1,'exodus':1,
                      'lev':2,'leviticus':2,
                      'num':3,'numbers':3,
@@ -137,7 +143,7 @@ class book:
                      '3 jn':63,'3 john':63,
                      'jude':64,
                      'rev':65,'revelation':65,'revelations':65
-                     }
+                     })
 
     def load(self,bibleText,match):
         startOfText=match.start()
