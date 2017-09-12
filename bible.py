@@ -227,9 +227,13 @@ class bible:
         if not (books==None):
             if(isinstance(books,int)):
                 books=[books]
-            elif(isinstance(books[0],str)):
-                if(isinstance(books,list)):
-                    return
+            elif(isinstance(books[0],str) or isinstance(books,list)):
+                if(isinstance(books,str)):
+                    books=[books]
+                books2=[]
+                for book in books:
+                    books2.append(self.bible.lookUp[book])
+                books=books2
         else:
             books=list(range(66))
         if not(chapters==None):
