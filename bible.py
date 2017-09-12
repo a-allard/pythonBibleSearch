@@ -4,7 +4,7 @@ import sys
 
 
 sys.path.insert(0,os.path.abspath(r"3901174"))
-
+from strReferenceList import strReferenceList
 import caselessDictionary
 
 class Verse:
@@ -75,7 +75,7 @@ class book:
         self._oldTBooks=[]
         self._newTBooks=[]
         self.books=None
-        self.book=[];
+        
         self.lookUp=caselessDictionary.caselessDictionary()
         self.lookUp.update({'gen':0,'genesis':0,
                      'ex':1,'exodus':1,
@@ -144,6 +144,7 @@ class book:
                      'jude':64,
                      'rev':65,'revelation':65,'revelations':65
                      })
+        self.book=strReferenceList(self.lookUp);
 
     def load(self,bibleText,match):
         startOfText=match.start()
