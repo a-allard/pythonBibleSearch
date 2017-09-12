@@ -9,6 +9,3 @@ from strReferenceList import strReferenceList
 bible=bible()
 bible.load()
 
-##lst=strReferenceList({'a':0,'b':1,'c':2,'d':3})
-##lst.append('This is string')
-
