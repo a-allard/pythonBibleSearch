@@ -1,5 +1,6 @@
 class strReferenceList(list):
-
+"""This allows the user to reference a list with string keys much like a dictionary
+While still having the list feel.  Requires a dictionary with integer values though"""
     def __init__(self,dictionary,initvals=[]):
         if not isinstance(dictionary,dict):
             return None
@@ -24,5 +25,4 @@ class strReferenceList(list):
                 index=self.dict[index]
             except:
                 raise('Index not found in dictionary')
-        #return index
         return list.__getitem__(self,index)
