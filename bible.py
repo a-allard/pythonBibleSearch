@@ -274,6 +274,7 @@ class bible:
         return(matchList,indexList)
 
     def dispSearch(self, indexes):
+        
         for index in indexes:
             bookAbrv=list(self.bible.lookUp.keys())[list(self.bible.lookUp.values()).index(index[0])]
             print(bookAbrv+' : '+self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
