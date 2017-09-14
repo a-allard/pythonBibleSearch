@@ -274,13 +274,25 @@ class bible:
         return(matchList,indexList)
 
     def dispSearch(self, indexes):
+        stats=stat()
+        stats.numberOfAppearances=len(indexes)
         
+        lastBookAbrv=''
         for index in indexes:
             bookAbrv=list(self.bible.lookUp.keys())[list(self.bible.lookUp.values()).index(index[0])]
             print(bookAbrv+' : '+self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
+            if not (lastBookAbrv==bookAbrv):
+                lastBookAbrv=bookAbrv
+                stats.listOfBooks.append(bookAbrv)
+        return stats
 
 
 
-
+class stat:
+    
+    def __init__(self):
+        self.numberOfAppearances=0
+        self.listOfBooks=[]
+    
 
 
