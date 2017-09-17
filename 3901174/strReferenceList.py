@@ -1,13 +1,18 @@
+import caselessDictionary
+
 class strReferenceList(list):
     """This allows the user to reference a list with string keys much like a dictionaryWhile still having the list feel.  Requires a dictionary with integer values though"""
     def __init__(self,dictionary,initvals=[]):
+        self.dict=caselessDictionary.caselessDictionary()
         if not isinstance(dictionary,dict):
             return None
         for value in dictionary.values():
             if not isinstance(value,int):
                 return None
-            
-        self.dict=dictionary
+        keys=list(dictionary.keys())
+        for key in keys:
+            val=dictionary[key]
+            self.dict[key.lower()]=val
 
 
     def __setitem__(self,index,value):

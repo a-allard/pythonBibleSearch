@@ -20,7 +20,7 @@ pair as the key's value (values become dictionaries)."""
         return dict.__getitem__(self, key.lower())
   
     def __setitem__(self, key, value):
-        return dict.__setitem__(self, key.lower(), {'key': key, 'val': value})
+        return dict.__setitem__(self, key.lower(), value)
 
     def get(self, key, default=None):
         try:

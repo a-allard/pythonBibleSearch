@@ -75,8 +75,9 @@ class book:
         self._oldTBooks=[]
         self._newTBooks=[]
         self.books=None
+        self.lookUp={}
         
-        self.lookUp=caselessDictionary.caselessDictionary()
+        self._lookUp=caselessDictionary.caselessDictionary()
         self.lookUp.update({'Gen':0,'Genesis':0,
                      'Ex':1,'Exodus':1,
                      'Lev':2,'Leviticus':2,
@@ -144,7 +145,11 @@ class book:
                      'Jude':64,
                      'Rev':65,'Revelation':65,'Revelations':65
                      })
-        self.book=strReferenceList(self.lookUp);
+        keys=list(self.lookUp.keys())
+        for key in keys:
+            val=self.lookUp[key]
+            self._lookUp[key.lower()]=val
+        self.book=strReferenceList(self._lookUp);
 
     def load(self,bibleText,match):
         startOfText=match.start()
@@ -172,7 +177,7 @@ class book:
     def __getitem__(self,key):
         if(isinstance(key,str)):
             try:
-                index=self.loopUp[key.lower()]
+                index=self._loopUp[key.lower()]
             except:
                 return -1
         elif(isinstance(key,int)):
