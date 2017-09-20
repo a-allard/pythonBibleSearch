@@ -4,7 +4,7 @@ when keys are listed, ie, via keys() or items() methods.
 
 Works by storing a lowercase version of the key as the new key and stores the original key-value 
 pair as the key's value (values become dictionaries)."""
-
+#modified form the origianl by Andrew Allard to suit the search appliction.
     def __init__(self, initval={}):
         if isinstance(initval, dict):
             for key, value in initval.__iter__():
