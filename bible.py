@@ -149,7 +149,8 @@ class book:
         for key in keys:
             val=self.lookUp[key]
             self._lookUp[key.lower()]=val
-        self.book=strReferenceList(self._lookUp);
+
+        self.book=strReferenceList(self.lookUp);
 
     def load(self,bibleText,match):
         startOfText=match.start()
@@ -173,27 +174,23 @@ class book:
         self.book[i+1].load(text[startOfBooks[-1]:])
         
             
-    
-    def __getitem__(self,key):
-        if(isinstance(key,str)):
-            try:
-                index=self._loopUp[key.lower()]
-            except:
-                return -1
-        elif(isinstance(key,int)):
-            index=key
+    #setters and getters
+    def __getitem__(self,index):
         return self.book[index]
     def __setitem__(self,index,val):
         self.book[index]=val
+#Commented out to before deleting from the code.  Making sure it works without
+        
+##    def __findBook__(self,abrev):
+##        for bookName in self.books:
+##            match=re.search(abrev,bookName)
+##            if(match):
+##                break
+##        pos=self.index(bookName)
+##        return (bookName,pos)
 
-    def __findBook__(self,abrev):
-        for bookName in self.books:
-            match=re.search(abrev,bookName)
-            if(match):
-                break
-        pos=self.index(bookName)
-        return (bookName,pos)
-
+## Loading two text files with the books of the bible in to allow the program to
+## find the books of the bible 
     def __loadBooks__(self):
         self.books=[];
         f=open(os.path.abspath('oldTestBooks.txt'))
@@ -212,6 +209,8 @@ class book:
 
         
 class bible:
+    #This is the deliminator for the script to find the start of the acutal
+    #text
     _startText='Old Testament'
 
     books=None;
@@ -219,8 +218,11 @@ class bible:
     def __init__(self):
         self.bible=book()
 
-    def load(self):
-        f=open('KJV_txt_ForPythonBreakup.txt')
+    def load(self,version='kjv'):
+        version=version.lower()
+        if(version=='kjv'):
+            f=open('KJV_txt_ForPythonBreakup.txt')
+        
         bibleText=f.read()
         match=re.search(self._startText,bibleText)
         if(match):
