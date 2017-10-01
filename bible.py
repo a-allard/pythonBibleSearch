@@ -221,7 +221,7 @@ class bible:
     def load(self,version='kjv'):
         version=version.lower()
         if(version=='kjv'):
-            f=open('KJV_txt_ForPythonBreakup.txt')
+            f=open('KJV.txt')
         
         bibleText=f.read()
         match=re.search(self._startText,bibleText)
