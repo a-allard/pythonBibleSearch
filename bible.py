@@ -8,7 +8,7 @@ from strReferenceList import strReferenceList
 import caselessDictionary
 
 class Verse:
-    """A class to split each verse into.  Not sure if this is really needed."""
+    """This class is setup to take a chapter of the Bible deliminating verses by {}.  The class then loads all the verses in and returns a list of verse strings in one Verse object"""
     
     def __init__(self):
         self.verse=[]
@@ -25,7 +25,7 @@ class Verse:
 
 
 class Chapter:
-    """This is fun"""
+    """This Class was setup to take in a book of the Bible and load it into Verse objects."""
     
     
     _numVerses=0
@@ -209,6 +209,15 @@ class book:
 
         
 class bible:
+    """
+    Written by Andrew Allard as a hobby type project.
+    This was written as an exersize in searching a file for a particular string and also allowing the Bible to be searched quickly and easily.
+    This class is setup to load a .txt file that contains the KJV Bible then break it out into chapters and verses.
+    This class allows the user to then search and returns some stats on the search and all the references.
+
+    Returns a bible object that contatins all the chapters and verses.  Hoping in the future to make this load versions from the internet if the
+    host is connected.  Not yet functional.
+    """
     #This is the deliminator for the script to find the start of the acutal
     #text
     _startText='Old Testament'
@@ -275,23 +284,16 @@ class bible:
                 for verse in verses2:
                     match=re.search(searchFor.lower(),self.bible.book[book].chapter[chapter].verse[verse].lower())
                     if(match):
-                        matchList.append(match)
+##                        matchList.append(match)
+                        m=match
                         indexList.append((book,chapter,verse))
+        if(len(indexList)>0):
+            stats=stat()
+            stats.__createStats__(self.bible,indexList,m)
                 
-        return(matchList,indexList)
+        return(stats)
 
-    def dispSearch(self, indexes):
-        stats=stat()
-        stats.numberOfAppearances=len(indexes)
-        
-        lastBookAbrv=''
-        for index in indexes:
-            bookAbrv=list(self.bible.lookUp.keys())[list(self.bible.lookUp.values()).index(index[0])]
-            print(bookAbrv+' : '+self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
-            if not (lastBookAbrv==bookAbrv):
-                lastBookAbrv=bookAbrv
-                stats.listOfBooks.append(bookAbrv)
-        return stats
+    
 
 
 
@@ -300,6 +302,51 @@ class stat:
     def __init__(self):
         self.numberOfAppearances=0
         self.listOfBooks=[]
+        
     
+    def __createStats__(self,bible,indexes,match):
+
+        if not (len(indexes)>0):
+            return
+
+        self._match=match
+        self.bible=bible
+        self.indexes=indexes
+        self.numberOfBookAppearances=[]
+        
+        self.numberOfAppearances=len(indexes)
+
+        appearancePerBookIndex=-1
+        
+        lastBookAbrv=''
+        for index in indexes:
+            bookAbrv=list(bible.lookUp.keys())[list(bible.lookUp.values()).index(index[0])]
+
+            if not (lastBookAbrv==bookAbrv):
+                self.numberOfBookAppearances.append(1)
+                lastBookAbrv=bookAbrv
+                self.listOfBooks.append(bookAbrv)
+                appearancePerBookIndex+=1
+            elif(lastBookAbrv==bookAbrv):
+                self.numberOfBookAppearances[appearancePerBookIndex]+=1
+        
+
+    def dispReferences(self):
+        for index, bookAbrv in zip(self.indexes,self.listOfBooks):
+            print(bookAbrv+' : '+self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
+
+    def dispStatsPretty(self):
+        phs=self._match.group()
+        print("The phrase: '"+phs+"' appears:",self.numberOfAppearances,"times in the Bible\n\n")
+        print("Here is a list of the books it appears in and how many times it appears.")
+        print("\tBook\t\tNumber Of Appearances")
+        print("--------------------------------------------------")
+        for bookName,appearances in zip(self.listOfBooks,self.numberOfBookAppearances):
+            if(len(bookName)>5):
+                print("\t",bookName,"\t\t",appearances)
+            else:
+                print("\t",bookName,"\t\t\t",appearances)
+        
+
 
 
