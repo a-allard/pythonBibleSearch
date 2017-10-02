@@ -8,3 +8,6 @@ from bible import bible
 bible=bible()
 bible.load()
 
+
+stats=bible.search('lay')
+stats.dispStatsPretty()
