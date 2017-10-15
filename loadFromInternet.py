@@ -18,3 +18,4 @@ class loadFromInterent:
         if not(self._connected):
             return
         
+        
