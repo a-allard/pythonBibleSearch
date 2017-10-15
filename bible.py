@@ -332,8 +332,9 @@ class stat:
         
 
     def dispReferences(self):
-        for index, bookAbrv in zip(self.indexes,self.listOfBooks):
-            print(bookAbrv+' : '+self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
+        for index in self.indexes:
+            bookName=self.bible.books[index[0]]
+            print(bookName+': '+self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
 
     def dispStatsPretty(self):
         phs=self._match.group()
