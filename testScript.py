@@ -6,5 +6,5 @@ from bible import bible
 
 
 bible=bible()
-bible.load()
+bible.load('NKJV')
 
