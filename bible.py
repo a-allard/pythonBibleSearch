@@ -2,6 +2,7 @@ import re
 import os
 import sys
 
+from loadFromInternet import loadFromInternet
 
 sys.path.insert(0,os.path.abspath(r"3901174"))
 from strReferenceList import strReferenceList
@@ -179,15 +180,6 @@ class book:
         return self.book[index]
     def __setitem__(self,index,val):
         self.book[index]=val
-#Commented out to before deleting from the code.  Making sure it works without
-        
-##    def __findBook__(self,abrev):
-##        for bookName in self.books:
-##            match=re.search(abrev,bookName)
-##            if(match):
-##                break
-##        pos=self.index(bookName)
-##        return (bookName,pos)
 
 ## Loading two text files with the books of the bible in to allow the program to
 ## find the books of the bible 
@@ -226,19 +218,26 @@ class bible:
     
     def __init__(self):
         self.bible=book()
+        self.bible.__loadBooks__()
 
     def load(self,version='kjv'):
         version=version.lower()
         if(version=='kjv'):
             f=open('KJV.txt')
+            bibleText=f.read()
+        else:
+            bibleText=loadFromInternet(version,self.bible.books)
         
-        bibleText=f.read()
         match=re.search(self._startText,bibleText)
         if(match):
             
             self.bible.load(bibleText,match)
         else:
             return -1
+
+
+
+        
     def search(self,searchFor,books=None,chapters=None,verses=None):
         if not (books==None):
             if(isinstance(books,int)):
