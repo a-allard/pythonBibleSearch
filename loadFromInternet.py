@@ -28,7 +28,7 @@ class loadFromInternet:
         
         
     def __checkConection__(self):
-        if not os.system('ping 8.8.8.8'):
+        if not os.system('ping 8.8.8.8 -n 1'):
             self._connected=True
         else:
             self._connected=False
