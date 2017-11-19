@@ -24,9 +24,8 @@ class loadFromInternet:
         if not self._connected:
             return None
         self.__version=version.upper()
-        bibleText=self.loadVersion()
-        del(self)
-        return bibleText
+        self.loadVersion()
+        
         
     def __checkConection__(self):
         if not os.system('ping 8.8.8.8'):
@@ -39,24 +38,34 @@ class loadFromInternet:
             return
         bibleString=self.__startText
         for book in self.__listOfBooks:
-            bibleString+=book+self.__bookDeliminator
+            bibleString+=self.__bookDeliminator+book
             for chapter in range(150):
-                for verse in range(200):
-                    verseReturned=re.findall(r'num">\d+.+?s\w+?>(.+?)</span>',requests.request('GET',self.__makeURL__(book,str(chapter),str(verse))).content.decode())
-                    if(len(verseReturned)>0):
-                        bibleString+='{'+str(chapter)+':'+str(verse)+'}'+verseReturned[0]
+                verseList=re.findall(r'num">\d+.+?s\w+?>(.+?)</span>',requests.request('GET',self.__makeURL__(book,str(chapter))).content.decode())
+                verseIndex=0
+                for verse in verseList:
+##                    verseReturned=re.findall(r'num">\d+.+?s\w+?>(.+?)</span>',requests.request('GET',self.__makeURL__(book,str(chapter),str(verse))).content.decode())
+##                    if(len(verseReturned)>0):
+                        bibleString+=' {'+str(chapter)+':'+str(verseIndex)+'} '+verse
+                        verseIndex+=1
+        f=open('C:\\Users\\grizz\\Desktop\\BibleParsed.txt','w')
+        f.write(bibleString)
+        f.close()
         return bibleString
+        del(self)
 
 
         
-    def __makeURL__(self,book,chapter,verse):
-        if not (type(self.__version)is str and type(book)is str and type(chapter)is str and type(verse)is str):
+    def __makeURL__(self,book,chapter,verse=None):
+        if not (type(self.__version)is str and type(book)is str and type(chapter)is str):
             raise AssertionError('One of the inputs is not a string')
             
         urlPart1=self.__site+'/passage/?search='
         urlPart3='&version='
         urlPart2='%3A'
-        return urlPart1+book+'+'+chapter+urlPart2+verse+urlPart3+self.__version
+        if(verse):
+            return urlPart1+book+'+'+chapter+urlPart2+verse+urlPart3+self.__version
+        else:
+            return urlPart1+book+'+'+chapter+urlPart3+self.__version
     
 
 
