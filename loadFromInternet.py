@@ -28,7 +28,7 @@ class loadFromInternet:
         
         
     def __checkConection__(self):
-        if not os.system('ping 8.8.8.8 -n 1'):
+        if not os.system('ping 8.8.8.8'):
             self._connected=True
         else:
             self._connected=False
@@ -47,9 +47,13 @@ class loadFromInternet:
 ##                    if(len(verseReturned)>0):
                         bibleString+=' {'+str(chapter)+':'+str(verseIndex)+'} '+verse
                         verseIndex+=1
-        f=open('C:\\Users\\grizz\\Desktop\\BibleParsed.txt','w')
-        f.write(bibleString)
-        f.close()
+        try:
+            path=os.getenv('HOME')+'\\Documents\\BibleParsed.txt'
+            f=open(path,'w')
+            f.write(bibleString)
+            f.close()
+        except:
+            pass
         return bibleString
         del(self)
 
