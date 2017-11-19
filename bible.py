@@ -39,7 +39,7 @@ class Chapter:
         self.numChapters=0
     def load(self,bookText):
         startOfChapters=[]
-        chapters=re.findall('\{\d+:\d+}',bookText)[-1]
+        chapters=re.findall('{\d+:\d+}',bookText)[-1]
         
         self.numChapters=int(re.search('{\d+',chapters).group()[1:])
         for curChap in range(self.numChapters):
@@ -226,7 +226,8 @@ class bible:
             f=open('KJV.txt')
             bibleText=f.read()
         else:
-            bibleText=loadFromInternet(version,self.bible.books)
+            internet=loadFromInternet(version,self.bible.books)
+            bibleText=internet.loadVersion()
         
         match=re.search(self._startText,bibleText)
         if(match):
