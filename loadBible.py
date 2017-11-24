@@ -20,11 +20,13 @@ class loadBible:
         self.__bookDeliminator=' Page 1 '
         self.__startText='Old Testament  '
         self.__listOfBooks=books
-        self.__checkConection__()
-        if not self._connected:
-            print('failed to connect.')
-            return None
+        
+##        self.__checkConection__()
+##        if not self._connected:
+##            print('failed to connect.')
+##            return None
         self.__version=version.upper()
+        self._alreadyExists=self.__checkExist__()
 ##        self.loadVersion()
         
         
@@ -34,6 +36,12 @@ class loadBible:
         else:
             self._connected=False
     def loadVersion(self,saveLocal=None):
+        if not self._alreadyExists:
+            bibleText=self.__loadFromInternet__(saveLocal)
+        else:
+            bibleText=self.__loadFromMem__()
+        return bibleText
+    def __loadFromInternet__(self, saveLocal=None):
         self.__checkConection__()
         if not(self._connected):
             return
@@ -45,6 +53,8 @@ class loadBible:
                 if(verseList):
                     verseIndex=1
                     for verse in verseList:
+                        if((verse.find('<i>')==0) or (verse.find('<b>')==0)):
+                            continue
                         htmlGarbageList=re.findall('(<.+?>)',verse)
                         for htmlGarbage in htmlGarbageList:
                             verse=verse.replace(htmlGarbage,'')
@@ -53,10 +63,17 @@ class loadBible:
                 else:
                     break;
         if(saveLocal):
-            if(self.__saveLocalCopy__(bibleString))
+            if not (self.__saveLocalCopy__(bibleString)):
+                print('Failed to Save')
         return bibleString
 
-
+    def __loadFromMem__(self):
+        path=self.__findPath__()
+        path=path+'\\BibleText'+self.__version+'.bib'
+        f=open(path,'r')
+        bibleText=f.read()
+        f.close()
+        return bibleText
         
     def __makeURL__(self,book,chapter,verse=None):
         if not (type(self.__version)is str and type(book)is str and type(chapter)is str):
@@ -77,6 +94,7 @@ class loadBible:
             f=open(path,'w')
             f.write(bibleString)
             f.close()
+            bSuccess=True
         except:
             pass
         return bSuccess
@@ -84,13 +102,23 @@ class loadBible:
     def __findPath__(self):
         path=os.path.expanduser('~')
         if(sys.platform.find('linux')>=0):
-            path+='\\.bibleApp
+            path+='\\.bibleApp'
         elif(sys.platform.find('win')>=0):
-            path+='\\AppData\\Local'
+            path+='\\AppData\\Local\\BibleApp'
         if not os.path.exists(path):
             os.mkdir(path)
         return path
 
+    def __checkExist__(self):
+        bExists=False
 
+        path=self.__findPath__()
+
+        for file in os.listdir(path):
+            if file.find('BibleText'+self.__version+'.bib')>=0:
+                bExists=True
+                break
+                
+        return bExists
 
 
