@@ -2,7 +2,7 @@ import re
 import os
 import sys
 
-from loadFromInternet import loadFromInternet
+from loadBible import loadBible
 
 sys.path.insert(0,os.path.abspath(r"3901174"))
 from strReferenceList import strReferenceList
@@ -16,7 +16,7 @@ class Verse:
     def load(self,text):
         text=text.replace('}','').split('{')
         for i in range(len(text)):
-            self.verse.append(text[i])
+            self.verse.append(text[i].strip(' '))
         
     def __getitem__(self,key):
         return self.verse[key]
@@ -38,6 +38,8 @@ class Chapter:
         self.chapter=[]
         self.numChapters=0
     def load(self,bookText):
+##        print(bookText[0:1000])
+##        return
         startOfChapters=[]
         chapters=re.findall('{\d+:\d+}',bookText)[-1]
         
@@ -122,7 +124,7 @@ class book:
                      'Mk':40,'Mark':40,
                      'Lk':41,'Luke':41,
                      'Jn':42,'John':42,
-                     'Acts':43,'Acts of the Apostles':43,
+                     'Acts':43,'Acts':43,
                      'Rom':44,'Romans':44,
                      '1 Cor':45,'1 Corinthians':45,
                      '2 Cor':46,'2 Corinthians':46,
@@ -162,9 +164,11 @@ class book:
             self.__loadBooks__()
         for curBook in self.books:
             stringOfStart=self._startOfBookKey+curBook
+##            print(stringOfStart)
             match=re.search(stringOfStart,text)
             if(match):
-                startOfBooks.append(match.start()+len(stringOfStart))
+                startOfBooks.append(match.start()+(match.end()-match.start()))
+##                print(match.group())
             else:
                 print(curBook)
         
@@ -220,14 +224,15 @@ class bible:
         self.bible=book()
         self.bible.__loadBooks__()
 
-    def load(self,version='kjv'):
-        version=version.lower()
-        if(version=='kjv'):
-            f=open('KJV.txt')
-            bibleText=f.read()
-        else:
-            internet=loadFromInternet(version,self.bible.books)
-            bibleText=internet.loadVersion()
+    def load(self,version='kjv',saveLocal=None):
+##        version=version.lower()
+##        if(version=='kjv'):
+##            f=open('KJV.txt')
+##            bibleText=f.read()
+##        else:
+        loader=loadBible(version,self.bible.books)
+        bibleText=loader.loadVersion(saveLocal)
+
         
         match=re.search(self._startText,bibleText)
         if(match):
