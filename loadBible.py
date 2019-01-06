@@ -49,12 +49,31 @@ class loadBible:
         for book in self.__listOfBooks:
             bibleString+=self.__bookDeliminator+book
             for chapter in range(1,150):
-                verseList=re.findall(r'num">\d+.+?s\w+?>(.+?)</span>',requests.request('GET',self.__makeURL__(book,str(chapter))).content.decode())
+                requestContent=requests.request('GET',self.__makeURL__(book,str(chapter))).content.decode()
+                verseList=re.findall(r'num">\d+.+?s\w+?>(.+?)</span>',requestContent)
+                subVerseList=re.findall(r'<span\sclass="\w+\s\w+?-1-(\d+)">(.+?)</span>',requestContent)
+                
                 if(verseList):
                     verseIndex=1
+##                    if(len(subVerseList)>0):
+##                        print(subVerseList)
+                    
+                    for i in range(len(subVerseList)):
+                        
+                        verseNum=int(subVerseList[i][0])-1
+##                        if not (self.__hasHTML__(subVerseList[i][1]):
+                        try:
+                            tempVerse=subVerseList[i][1]
+                            verseList[verseNum]+=tempVerse
+                        except:
+                            print(i)
+                            print(subVerseList)
+                            print(verseNum)
                     for verse in verseList:
                         if((verse.find('<i>')==0) or (verse.find('<b>')==0)):
                             continue
+                        if(verse.find(chr(8197))>=0):
+                            verse.replace(chr(8197),'')
                         htmlGarbageList=re.findall('(<.+?>)',verse)
                         for htmlGarbage in htmlGarbageList:
                             verse=verse.replace(htmlGarbage,'')
@@ -74,6 +93,12 @@ class loadBible:
         bibleText=f.read()
         f.close()
         return bibleText
+    def __hasHTML__(self,string):
+        m=re.match(r'<s.+?>',string)
+        if(m):
+            return True
+        else:
+            return False
         
     def __makeURL__(self,book,chapter,verse=None):
         if not (type(self.__version)is str and type(book)is str and type(chapter)is str):
