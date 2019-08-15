@@ -14,13 +14,13 @@ class loadBible:
 
 
 
-    
+
     def __init__(self,version,books):
         self.__site='http://www.biblegateway.com'
         self.__bookDeliminator=' Page 1 '
         self.__startText='Old Testament  '
         self.__listOfBooks=books
-        
+
 ##        self.__checkConection__()
 ##        if not self._connected:
 ##            print('failed to connect.')
@@ -28,10 +28,14 @@ class loadBible:
         self.__version=version.upper()
         self._alreadyExists=self.__checkExist__()
 ##        self.loadVersion()
-        
-        
+
+
     def __checkConection__(self):
-        if not os.system('ping 8.8.8.8'):
+        if 'win' in sys.platform:
+            cmd = 'ping 8.8.8.8'
+        elif 'linux' in sys.platform:
+            cmd = 'ping 8.8.8.8 -c 3'
+        if not os.system(cmd):
             self._connected=True
         else:
             self._connected=False
@@ -52,14 +56,14 @@ class loadBible:
                 requestContent=requests.request('GET',self.__makeURL__(book,str(chapter))).content.decode()
                 verseList=re.findall(r'num">\d+.+?s\w+?>(.+?)</span>',requestContent)
                 subVerseList=re.findall(r'<span\sclass="\w+\s\w+?-1-(\d+)">(.+?)</span>',requestContent)
-                
+
                 if(verseList):
                     verseIndex=1
 ##                    if(len(subVerseList)>0):
 ##                        print(subVerseList)
-                    
+
                     for i in range(len(subVerseList)):
-                        
+
                         verseNum=int(subVerseList[i][0])-1
 ##                        if not (self.__hasHTML__(subVerseList[i][1]):
                         try:
@@ -99,7 +103,7 @@ class loadBible:
             return True
         else:
             return False
-        
+
     def __makeURL__(self,book,chapter,verse=None):
         if not (type(self.__version)is str and type(book)is str and type(chapter)is str):
             raise AssertionError('One of the inputs is not a string')
@@ -127,7 +131,7 @@ class loadBible:
     def __findPath__(self):
         path=os.path.expanduser('~')
         if(sys.platform.find('linux')>=0):
-            path+='\\.bibleApp'
+            path+='/.bibleApp'
         elif(sys.platform.find('win')>=0):
             path+='\\AppData\\Local\\BibleApp'
         if not os.path.exists(path):
@@ -143,7 +147,7 @@ class loadBible:
             if file.find('BibleText'+self.__version+'.bib')>=0:
                 bExists=True
                 break
-                
+
         return bExists
 
 
