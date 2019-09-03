@@ -275,14 +275,15 @@ class bible:
             if(max(chapters2) > len(self.bible.book[book].chapter)):
                 for chap in chapters2:
                     if(chap > len(self.bible.book[book].chapter) - 1):
-                        chapters2 = chapters2[0:chapters2.index(chap)]
+                        chapters2 = chapters2[0: chap]
                         break
             for chapter in chapters2:
                 verses2 = verses
+                # print('Book: {0}\t Chapter: {1}'.format(book, chapter))
                 if(max(verses2) > len(self.bible.book[book].chapter[chapter].verse)):
                     for ver in verses2:
                         if(ver > len(self.bible.book[book].chapter[chapter].verse) - 1):
-                            verses2 = verses2[0:verses2.index(ver)]
+                            verses2 = verses2[0: ver]
                             break
                 for verse in verses2:
                     match = re.search(searchFor.lower(),
@@ -337,7 +338,21 @@ class stat:
     def dispReferences(self):
         for index in self.indexes:
             bookName = self.bible.books[index[0]]
-            print(bookName + ': ' + self.bible.book[index[0]].chapter[index[1]].verse[index[2]])
+            print(bookName + ': ' + self.bible.book[index[0]].chapter[index[1]].verse[index[2]] + '\n')
+
+    def dispJustRef(self):
+        for index in self.indexes:
+            bookName = self.bible.books[index[0]]
+            print(bookName + ': ' + self.bible.book[index[0]].chapter[index[1]].verse[index[2]].split(' ')[0] + '\n')
+
+    def dispRef(self, index, verseEachEnd=False):
+        idx = self.indexes[index]
+        bookName = self.bible.books[idx[0]]
+        if verseEachEnd:
+            print(bookName + ': ' + self.bible.book[idx[0]].chapter[idx[1]].verse[idx[2]-1] + '\n')
+        print(bookName + ': ' + self.bible.book[idx[0]].chapter[idx[1]].verse[idx[2]] + '\n')
+        if verseEachEnd:
+            print(bookName + ': ' + self.bible.book[idx[0]].chapter[idx[1]].verse[idx[2]+1] + '\n')
 
     def dispStatsPretty(self):
         phs = self._match.group()
